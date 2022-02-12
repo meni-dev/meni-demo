@@ -3,6 +3,37 @@ import './Add.css'
 
 
 class Add extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { code: "", name: "", codeErrorMessage: "", nameErrorMessage: "" };
+    }
+
+    onCodeChange = (event) => {
+        this.setState({ code: event.target.value });
+    }
+    onNamechange = (event) => {
+        this.setState({ name: event.target.value });
+    }
+
+    saveCustomerInfo = () => {
+
+        // Code
+        if (this.state.code === "") {
+            this.setState({ codeErrorMessage: "Code is mandatory" });
+        } else {
+            this.setState({ codeErrorMessage: "" });
+        }
+
+        //Name
+        if (this.state.name === "") {
+            this.setState({ nameErrorMessage: "name is mandatory" });
+        } else {
+            this.setState({ nameErrorMessage: "" });
+        }
+    }
+
+
     render() {
         return (
             <div>
@@ -10,15 +41,17 @@ class Add extends React.Component {
                     <div className="row mb-3">
                         <label htmlFor="inputCode" className="col-sm-2 col-form-label">Customer Code</label>
                         <div className="col-sm-6">
-                            <input type="text" className="form-control" id="inputCode" />
+                            <input type="text" className="form-control" id="inputCode" value={this.state.code} onChange={this.onCodeChange} />
                         </div>
+                        <span className="text-danger">{this.state.codeErrorMessage}</span>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="inputName" className="col-sm-2 col-form-label">Customer Name</label>
                         <div className="col-sm-6">
-                            <input type="text" className="form-control" id="inputName" />
+                            <input type="text" className="form-control" id="inputName" value={this.state.name} onChange={this.onNamechange} />
                         </div>
+                        <span className="text-danger">{this.state.nameErrorMessage}</span>
                     </div>
 
                     <div className="row mb-3">
@@ -70,7 +103,7 @@ class Add extends React.Component {
 
                         </div>
                         <div className="col-sm-6">
-                            <button type="submit" className="btn btn-primary btn-lg btn-space">Submit</button>
+                            <button type="button" onClick={this.saveCustomerInfo} className="btn btn-primary btn-lg btn-space">Submit</button>
                             <button type="button" className="btn btn-primary btn-lg">Clear</button>
                         </div>
                     </div>
