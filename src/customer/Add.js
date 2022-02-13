@@ -6,7 +6,20 @@ class Add extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { code: "", name: "", codeErrorMessage: "", nameErrorMessage: "" };
+        this.state = {
+            code: "",
+            name: "",
+            age: "",
+            phoneNumber: "",
+            PinCode: "",
+            country: "0",
+            codeErrorMessage: "",
+            nameErrorMessage: "",
+            ageErrorMessage: "",
+            phoneNumberErrorMessage: "",
+            pinCodeErrorMessage: "",
+            countryErrorMessage: "",
+        };
     }
 
     onCodeChange = (event) => {
@@ -15,23 +28,84 @@ class Add extends React.Component {
     onNamechange = (event) => {
         this.setState({ name: event.target.value });
     }
+    onAgechange = (event) => {
+        this.setState({ age: event.target.value });
+    }
+    onphoneNumberchange = (event) => {
+        this.setState({ phoneNumber: event.target.value });
+    }
+    OnPinCodechange = (event) => {
+        this.setState({ PinCode: event.target.value });
+
+    }
+    oncountryChange = (event) => {
+        alert(event.target.value)
+        this.setState({ country: event.target.value });
+    }
+
+
 
     saveCustomerInfo = () => {
 
         // Code
         if (this.state.code === "") {
-            this.setState({ codeErrorMessage: "Code is mandatory" });
+            this.setState({ codeErrorMessage: "*Code is mandatory" });
         } else {
             this.setState({ codeErrorMessage: "" });
         }
 
         //Name
         if (this.state.name === "") {
-            this.setState({ nameErrorMessage: "name is mandatory" });
+            this.setState({ nameErrorMessage: "*Name is mandatory" });
         } else {
             this.setState({ nameErrorMessage: "" });
         }
+
+        //age
+        var age = parseInt(this.state.age);
+        if (isNaN(age)) {
+            this.setState({ ageErrorMessage: "*Age is mandatory" });
+        } else if (age > 100 || age < 1) {
+            this.setState({ ageErrorMessage: "*Please provide valid age" })
+        }
+        else {
+            this.setState({ ageErrorMessage: "" });
+        }
+        //phoneNumber
+        var phoneNumber = parseInt(this.state.phoneNumber);
+        if (isNaN(phoneNumber)) {
+            this.setState({ phoneNumberErrorMessage: "*Enter valid phone number" })
+        } else {
+
+            if (this.state.phoneNumber.length != 10) {
+                this.setState({ phoneNumberErrorMessage: "*Phone number should be 10 numbers" });
+            }
+            else {
+                this.setState({ phoneNumberErrorMessage: "" });
+            }
+        }
+
+        // PinCode
+        if (this.state.PinCode === "") {
+            this.setState({ pinCodeErrorMessage: "*PinCode is mandatory" });
+        } else {
+            this.setState({ pinCodeErrorMessage: "" });
+        }
+        //country
+        var country = parseInt(this.state.country);
+        if (country == 0) {
+            this.setState({ countryErrorMessage: "choose countryname" })
+        }
+        else {
+            this.setState({ countryErrorMessage: "" });
+        }
+
+
+
+
     }
+
+
 
 
     render() {
@@ -43,7 +117,7 @@ class Add extends React.Component {
                         <div className="col-sm-6">
                             <input type="text" className="form-control" id="inputCode" value={this.state.code} onChange={this.onCodeChange} />
                         </div>
-                        <span className="text-danger">{this.state.codeErrorMessage}</span>
+                        <span className="text-danger col-sm-2">{this.state.codeErrorMessage}</span>
                     </div>
 
                     <div className="row mb-3">
@@ -51,21 +125,33 @@ class Add extends React.Component {
                         <div className="col-sm-6">
                             <input type="text" className="form-control" id="inputName" value={this.state.name} onChange={this.onNamechange} />
                         </div>
-                        <span className="text-danger">{this.state.nameErrorMessage}</span>
+                        <span className="text-danger  col-sm-2">{this.state.nameErrorMessage}</span>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="inputAge" className="col-sm-2 col-form-label">Age</label>
                         <div className="col-sm-6">
-                            <input type="number" className="form-control" id="inputAge" />
+                            <input type="number" className="form-control" id="inputAge" value={this.state.age} onChange={this.onAgechange} />
                         </div>
+                        <span className="text-danger  col-sm-2">{this.state.ageErrorMessage}</span>
                     </div>
 
                     <div className="row mb-3">
                         <label htmlFor="inputMobile" className="col-sm-2 col-form-label">Mobile Number</label>
                         <div className="col-sm-6">
-                            <input type="number" className="form-control" id="inputMobile" />
+                            <input type="number" className="form-control" id="inputMobile" value={this.state.phoneNumber} onChange={this.onphoneNumberchange} />
+
                         </div>
+                        <span className="text-danger  col-sm-2">{this.state.phoneNumberErrorMessage}</span>
+                    </div>
+
+                    <div className="row mb-3">
+                        <label htmlFor="inputPinCode" className="col-sm-2 col-form-label">Pin Code</label>
+                        <div className="col-sm-6">
+                            <input type="number" className="form-control" id="inputPinCode" value={this.state.PinCode} onChange={this.OnPinCodechange} />
+
+                        </div>
+                        <span className="text-danger col-sm-2">{this.state.pinCodeErrorMessage}</span>
                     </div>
 
                     <fieldset className="row mb-3">
@@ -90,18 +176,17 @@ class Add extends React.Component {
                     <div className="row mb-3">
                         <label className="col-sm-2 col-form-label" htmlFor="country">Country</label>
                         <div className="col-sm-6">
-                            <select className="form-select" id="country">
-                                <option >Choose Country...</option>
+                            <select className="form-select" id="country" onChange={this.oncountryChange}>
+                                <option value="0">Choose Country...</option>
                                 <option value="1">India</option>
                                 <option value="2">China</option>
                                 <option value="3">USA</option>
                             </select>
                         </div>
+                        <span className="text-danger col-sm-2">{this.state.countryErrorMessage}</span>
                     </div>
                     <div className="row">
-                        <div className="col-sm-2">
 
-                        </div>
                         <div className="col-sm-6">
                             <button type="button" onClick={this.saveCustomerInfo} className="btn btn-primary btn-lg btn-space">Submit</button>
                             <button type="button" className="btn btn-primary btn-lg">Clear</button>
