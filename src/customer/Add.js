@@ -13,12 +13,14 @@ class Add extends React.Component {
             phoneNumber: "",
             PinCode: "",
             country: "0",
+            gender: "",
             codeErrorMessage: "",
             nameErrorMessage: "",
             ageErrorMessage: "",
             phoneNumberErrorMessage: "",
             pinCodeErrorMessage: "",
             countryErrorMessage: "",
+            genderErrorMessage: ""
         };
     }
 
@@ -39,8 +41,15 @@ class Add extends React.Component {
 
     }
     oncountryChange = (event) => {
-        alert(event.target.value)
         this.setState({ country: event.target.value });
+    }
+
+    onGenderChange = (event) => {
+        this.setState({ gender: event.target.value });
+    }
+
+    onClear = () => {
+        this.setState({ code: "", name: "" });
     }
 
 
@@ -100,13 +109,15 @@ class Add extends React.Component {
             this.setState({ countryErrorMessage: "" });
         }
 
+        // Gender
 
-
+        if (this.state.gender === "Male" || this.state.gender === "Female") {
+            this.setState({ genderErrorMessage: "" });
+        } else {
+            this.setState({ genderErrorMessage: "*Please choose gender" });
+        }
 
     }
-
-
-
 
     render() {
         return (
@@ -156,21 +167,24 @@ class Add extends React.Component {
 
                     <fieldset className="row mb-3">
                         <label className="col-sm-2 col-form-label">Gender</label>
-                        <div className="col-sm-10">
+                        <div className="col-sm-6">
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="rdoGender" id="male" value="Male" />
+                                <input className="form-check-input" type="radio" name="rdoGender" id="male" value="Male"
+                                    onChange={this.onGenderChange} />
                                 <label className="form-check-label" htmlFor="male">
                                     Male
                                 </label>
                             </div>
                             <div className="form-check">
-                                <input className="form-check-input" type="radio" name="rdoGender" id="female" value="Female" />
+                                <input className="form-check-input" type="radio" name="rdoGender" id="female" value="Female"
+                                    onChange={this.onGenderChange} />
                                 <label className="form-check-label" htmlFor="female">
                                     Female
                                 </label>
                             </div>
 
                         </div>
+                        <span className="text-danger col-sm-2">{this.state.genderErrorMessage}</span>
                     </fieldset>
 
                     <div className="row mb-3">
@@ -189,7 +203,7 @@ class Add extends React.Component {
 
                         <div className="col-sm-6">
                             <button type="button" onClick={this.saveCustomerInfo} className="btn btn-primary btn-lg btn-space">Submit</button>
-                            <button type="button" className="btn btn-primary btn-lg">Clear</button>
+                            <button type="button" className="btn btn-primary btn-lg" onClick={this.onClear}>Clear</button>
                         </div>
                     </div>
 
