@@ -4,9 +4,10 @@ import './App.css';
 function App() {
   return (
     <div className="container">
-      <div className='row'>
+      <h1>Customer Details</h1><hr /><br />
+      <div className='row' style={{ paddingBottom: 20 }}>
         <div className='col-md-12 text-right'>
-          <a href="/add" className="btn btn-outline-success rightAlign">Add</a>
+          <a href="/add" className="btn btn-outline-success rightAlign">+ Add Customer</a>
         </div>
 
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import './Add.css'
+import axios from "axios"
 
 
 class Add extends React.Component {
@@ -49,15 +50,17 @@ class Add extends React.Component {
     }
 
     onClear = () => {
-        this.setState({ code: "", name: "" });
+        this.setState({ code: "", name: "", age: "", PinCode: "", country: "", gender: "", phoneNumber: "" });
     }
 
 
 
     saveCustomerInfo = () => {
+        var isValidForm = true;
 
         // Code
         if (this.state.code === "") {
+            isValidForm = false;
             this.setState({ codeErrorMessage: "*Code is mandatory" });
         } else {
             this.setState({ codeErrorMessage: "" });
@@ -65,6 +68,7 @@ class Add extends React.Component {
 
         //Name
         if (this.state.name === "") {
+            isValidForm = false;
             this.setState({ nameErrorMessage: "*Name is mandatory" });
         } else {
             this.setState({ nameErrorMessage: "" });
@@ -73,8 +77,10 @@ class Add extends React.Component {
         //age
         var age = parseInt(this.state.age);
         if (isNaN(age)) {
+            isValidForm = false;
             this.setState({ ageErrorMessage: "*Age is mandatory" });
         } else if (age > 100 || age < 1) {
+            isValidForm = false;
             this.setState({ ageErrorMessage: "*Please provide valid age" })
         }
         else {
@@ -83,10 +89,12 @@ class Add extends React.Component {
         //phoneNumber
         var phoneNumber = parseInt(this.state.phoneNumber);
         if (isNaN(phoneNumber)) {
+            isValidForm = false;
             this.setState({ phoneNumberErrorMessage: "*Enter valid phone number" })
         } else {
 
             if (this.state.phoneNumber.length != 10) {
+                isValidForm = false;
                 this.setState({ phoneNumberErrorMessage: "*Phone number should be 10 numbers" });
             }
             else {
@@ -96,6 +104,7 @@ class Add extends React.Component {
 
         // PinCode
         if (this.state.PinCode === "") {
+            isValidForm = false;
             this.setState({ pinCodeErrorMessage: "*PinCode is mandatory" });
         } else {
             this.setState({ pinCodeErrorMessage: "" });
@@ -103,6 +112,7 @@ class Add extends React.Component {
         //country
         var country = parseInt(this.state.country);
         if (country == 0) {
+            isValidForm = false;
             this.setState({ countryErrorMessage: "choose countryname" })
         }
         else {
@@ -114,14 +124,36 @@ class Add extends React.Component {
         if (this.state.gender === "Male" || this.state.gender === "Female") {
             this.setState({ genderErrorMessage: "" });
         } else {
+            isValidForm = false;
             this.setState({ genderErrorMessage: "*Please choose gender" });
         }
+
+        if (isValidForm) {
+            var data = {
+                customerCode: this.state.code,
+                customerName: this.state.name,
+                mobileNumber: this.state.phoneNumber,
+                age: parseInt(this.state.age),
+                country: this.state.country
+            };
+            axios.post("https://pos-api-react.azurewebsites.net/api/customer/addcustomer", data)
+                .then(function (response) {
+                    alert(JSON.stringify(response.data));
+
+                })
+                .catch(function () {
+                    alert("error")
+                });
+            this.onClear();
+        }
+
 
     }
 
     render() {
         return (
-            <div>
+            <div className="container">
+                <h1>Add Customer Information</h1><hr></hr><br></br>
                 <form className="form-horizontal">
                     <div className="row mb-3">
                         <label htmlFor="inputCode" className="col-sm-2 col-form-label">Customer Code</label>
