@@ -9,7 +9,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       customer: [],
-      name: ""
     };
   }
 
@@ -25,18 +24,6 @@ class App extends React.Component {
       });
   }
 
-  // getCustomerDetails = () => {
-  //   axios.get("https://pos-api-react.azurewebsites.net/api/customer/all")
-  //     .then(function (response) {
-  //       console.log(JSON.stringify(response.data.data));
-
-  //       this.setState({ customer: response.data.data });
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error)
-  //     });
-  // }
-
 
   render() {
     let customerData = this.state.customer.map((item) => {
@@ -50,7 +37,6 @@ class App extends React.Component {
 
 
     return (<div className="container">
-      <h2>{this.state.name}</h2>
       <h1 className='text-center'>Customer Details</h1><hr /><br />
       <div className='row' style={{ paddingBottom: 20 }}>
         <div className='col-md-12 text-right'>
